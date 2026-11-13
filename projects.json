@@ -1,0 +1,53 @@
+[
+  {
+    "title": "CompanyWebsite",
+    "category": "WEB DEVELOPMENT",
+    "subtitle": "企业官网与 CMS 后台管理系统",
+    "excerpt": "参与企业官网前后端与 CMS 后台管理系统开发，覆盖内容展示、分类筛选、详情查看与留言提交，基于 Spring Boot 3 与 Vue 3.5 构建，支持中英双语与 SEO。",
+    "tags": [
+      "企业官网",
+      "Spring Boot",
+      "Vue 3",
+      "CMS"
+    ],
+    "color": "#ee8556",
+    "content": "<p><a href=\"https://smarthuihua.com\">https://smarthuihua.com</a></p>\n<ul>\n<li>参与企业官网前后端与 CMS 后台管理系统开发，负责内容展示、分类筛选、详情查看、留言提交等核心功能。基于 Spring Boot 3 + JdbcTemplate 构建后端 REST API，通过 Spring MVC 实现服务、方案、案例、新闻、关于我们等内容数据查询与管理，攻克了无 ORM 框架下手写 SQL 的数据映射与分页查询难点。</li>\n<li>开发 CMS 后台内容管理模块，使用 Vue 3.5 + TypeScript + Vite 搭建前端多入口页面（非传统单页 SPA），结合 Pinia 管理状态，封装统一 API 请求层与通用业务组件。</li>\n<li>实现中英文双语内容展示与 SEO 静态文件生成（sitemap.xml、robots.txt），支持搜索引擎收录配置。</li>\n</ul>",
+    "image": "",
+    "url": "https://smarthuihua.com",
+    "sample": false
+  },
+  {
+    "title": "PinsonWebsite",
+    "category": "WEB DEVELOPMENT",
+    "subtitle": "前后端分离的企业官网",
+    "excerpt": "基于 Vue 3.5 + TypeScript 与 Spring Boot 4 的前后端分离企业官网，独立完成案例与解决方案两大模块，完成 37 个案例与 8 个解决方案的迭代与多语言渲染，并落地 Docker 化部署。",
+    "tags": [
+      "Vue 3",
+      "TypeScript",
+      "Spring Boot",
+      "Docker"
+    ],
+    "color": "#8ec6c4",
+    "content": "<p><a href=\"https://pinsontec.top\">https://pinsontec.top</a></p>\n<ul>\n<li>项目基于 Vue 3.5 + TypeScript + Vite + Pinia 前端技术栈与 Spring Boot 4 + MyBatis Plus + MySQL 8 后端技术栈搭建，采用前后端分离架构。</li>\n<li>独立负责\"案例\"与\"解决方案\"两大核心业务模块的前端开发，基于 Vue 3 Composition API + TypeScript 构建页面结构与数据交互层，完成 37 个案例与 8 个解决方案的卡片列表、详情页等多页面内容结构与视觉呈现进行多轮迭代优化，完成后端接口对接、多语言内容渲染。</li>\n<li>负责项目从本地开发到生产环境的 Docker 化部署落地，基于 Docker Compose 编排 Nginx 前端托管与 Spring Boot 后端服务。沉淀了从业务页面开发到项目部署落地的全流程经验，强化了 Vue 3 + TypeScript 前端工程化开发、Spring Boot 前后端接口协作、Docker 容器化部署的实战能力。</li>\n</ul>",
+    "image": "",
+    "url": "https://pinsontec.top",
+    "sample": false
+  },
+  {
+    "title": "nightshift",
+    "category": "AI APPLICATION",
+    "subtitle": "面向程序员的项目分析管理助手",
+    "excerpt": "面向高校课程项目、竞赛团队与实验室开发团队的 GitHub 夜班交接智能体，帮助成员了解仓库变化、分析风险并整理下一步关注事项，配套 Android 应用与代码全景工作区。",
+    "tags": [
+      "AI Agent",
+      "Android",
+      "FastAPI",
+      "GitHub"
+    ],
+    "color": "#b9a6e1",
+    "content": "<p><em>面向程序员的项目分析管理助手，可根据需求对项目变更进行规划，支持对项目的全量分析、变更分析。</em></p>\n<p><strong>一 </strong><strong>项</strong><strong>目背景与</strong><strong>应</strong><strong>用</strong><strong>场</strong><strong>景</strong></p>\n<p>github 夜班交接智能体面向高校课程项目、竞赛团队和实验室开发团队，帮助成员了解 GitHub 仓库变化、分析相关风险，并整理下一步需要关注的事项。作品以讯飞星辰 Agent 工作流承载项目理解与变更分析，配套 NightShift Android 应用和代码全景工作区，提供从查看变更到继续追问、核对文件的使用入口。</p>\n<p><strong>1.1 </strong><strong>课</strong><strong>余</strong><strong>协</strong><strong>作中的交接</strong><strong>问题</strong></p>\n<p>学生团队通常需要在课程、实习与项目开发之间安排时间，成员未必同时在线。接手成员要从提交记录、PR 讨论、项目说明和聊天消息中重新建立上下文，才能判断近期改动与自己的任务是否相关。</p>\n<p>项目进入比赛冲刺或成员轮换阶段后，交接所需的信息更加分散。GitHub 能记录提交和讨论，但将这些记录转化为接班说明仍需要人工整理。直接向通用对话工具提问时，使用者还需选择文件、补充项目背景并核对回答。NightShift 将仓库数据读取、按意图分析和结果展示组织到同一使用流程中，为团队提供初步判断所需的材料。</p>\n<p><strong>二 方案概述</strong></p>\n<p><strong>2.1 </strong><strong>一次</strong><strong>项</strong><strong>目交接的使用</strong><strong>过</strong><strong>程</strong></p>\n<p>成员进入应用后，选择已订阅的仓库或输入 GitHub 地址。基础晨报展示当前获取到的提交快照和变更统计，帮助成员确定关注范围。需要进一步理解时，用户提出具体问题，由工作流分析项目或近期变更；阅读结论后，可以继续追问，并在代码全景中查看相关文件和结构线索。</p>\n<p>例如，接手课程项目的成员可以先查看近期改动，再提出“这些变更涉及哪些文件，下一步应检查什么”。系统读取可用的仓库资料并整理分析结果，成员据此回到代码与原始记录核对。这里描述的是使用场景，运行示例与验证范围见第五章。</p>\n<p><strong>2.2 </strong><strong>智能体与配套</strong><strong>软</strong><strong>件的分工</strong></p>\n<table><tbody><tr><td><strong>组成</strong></td><td><strong>职责</strong></td><td><strong>交付形态</strong></td></tr><tr><td>星辰 Agent 工作流</td><td>识别用户意图，读取仓库资料，组织项目理解、风险分析和追问。</td><td>平台体验链接、工作流YAML</td></tr><tr><td>NightShift Android<br>应用</td><td>提供热点、晨报、分析对话、代码全景与订阅入口。</td><td>APK、Android 源码</td></tr><tr><td>FastAPI 后端</td><td>读取仓库数据，生成基础晨报，转发工作流请求，管理账号与订阅。</td><td>Python 源码、部署配置</td></tr><tr><td>代码全景工作区</td><td>查看文件树、项目分析和图谱，辅助定位需阅读的代码。</td><td>Web 前端及静态构建产<br>物</td></tr></tbody></table>\n<p>基础晨报和工作流分析承担不同任务。晨报按当前快照与规则整理统计和摘要；项目理解、变更分析对话通过星辰 Agent 工作流返回分析文本。代码全景补充文件与项目结构视角，其工作区配置与晨报页配置分别管理。</p>",
+    "image": "",
+    "url": "",
+    "sample": false
+  }
+]

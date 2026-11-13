@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#141c22">
+    <meta name="description" content="一个可以漫游的个人项目展厅。设计、代码与好奇心，在这里相遇。">
+    <link rel="stylesheet" href="assets/portfolio.css">
+</head>
+<body class="space-home">
+<a class="space-skip" href="#space-content">跳到作品内容</a>
+<div class="space-background" aria-hidden="true"><canvas id="space-canvas"></canvas></div>
+<div class="space-grain" aria-hidden="true"></div>
+<header class="space-header">
+    <a class="space-brand" href="#intro"><span class="space-mark">✳</span><span>__BRAND__</span><span class="space-brand-divider">/</span><small>PERSONAL PORTFOLIO</small></a>
+    <nav aria-label="主导航"><a href="#intro" data-nav="intro" aria-current="page">首页</a><a href="#work-1" data-nav="work">精选项目 <sup>__COUNT_02__</sup></a><a href="#about" data-nav="about">关于我 ↗</a></nav>
+    <span class="space-header-note"><i></i> OPEN TO POSSIBILITIES</span>
+</header>
+<main id="space-content" tabindex="-1">
+    <section class="space-section space-intro" id="intro" data-label="THE GALLERY" aria-labelledby="space-title">
+        <div class="space-copy">
+            <p class="space-eyebrow"><span>01 /</span> A SPACE FOR IDEAS</p>
+            <h1 id="space-title">让想法，<br>在此<span>发生。</span></h1>
+            <p class="space-english">IDEAS INTO EXPERIENCES.</p>
+            <p class="space-description">你好，欢迎来到浊的个人项目展厅。<br>在设计与代码之间，探索想法的更多可能。<br>向下滚动，走进我的创作世界。</p>
+            <a href="#work-1" class="space-button">进入作品展厅 <span>↗</span></a>
+            <div class="space-meta"><span>__COUNT_02__ <small>精选项目</small></span><span>∞ <small>持续探索</small></span></div>
+        </div>
+        <div class="space-scene-note" aria-hidden="true"><span>EXHIBITION 001</span><strong>Between space<br>& imagination.</strong><i></i></div>
+    </section>
+__PROJECT_SECTIONS__
+    <section class="space-section" id="about" data-label="KEEP EXPLORING" aria-labelledby="about-title">
+        <div class="space-copy">
+            <p class="space-eyebrow"><span>__ABOUT_INDEX_02__ /</span> BEHIND THE IDEAS</p>
+            <h2 id="about-title" class="space-cn-title">保持好奇，<br>继续<span>创造。</span></h2>
+            <p class="space-english">ALWAYS A WORK IN PROGRESS.</p>
+            <p class="space-description">__ABOUT__</p>
+            <div class="space-tags"><span>产品设计</span><span>前端开发</span><span>创意编程</span></div>
+            <a href="#work-1" class="space-button">再看看我的作品 <span>↗</span></a>
+            <p class="space-copyright">© __YEAR__ __BRAND__ / BUILT WITH CURIOSITY</p>
+        </div>
+    </section>
+</main>
+<aside class="space-rail" aria-label="展厅章节">
+    <a href="#intro" aria-label="首页" aria-current="step"><span>01</span><i></i></a>
+__RAIL_ITEMS__
+    <a href="#about" aria-label="关于我"><span>__ABOUT_INDEX_02__</span><i></i></a>
+</aside>
+<footer class="space-footer">
+    <a id="space-next" href="#work-1"><span class="space-scroll-icon">↓</span><span id="space-scroll-label">滚动，探索下一个视角</span></a>
+    <span class="space-location"><span id="space-index">01</span> <i>/</i> <span id="space-label">THE GALLERY</span></span>
+    <button id="space-motion" type="button" aria-pressed="false">◌ <span>动态视角</span></button>
+    <div class="space-progress" aria-hidden="true"></div>
+</footer>
+<dialog id="space-dialog" aria-labelledby="space-dialog-title">
+    <div class="space-dialog-header"><span>PROJECT / <span id="space-dialog-index"></span></span><button id="space-close" aria-label="关闭项目详情" autofocus>×</button></div>
+    <p id="space-dialog-sample" class="space-sample">概念项目 · 展厅示例</p>
+    <h2 id="space-dialog-title"></h2><p id="space-dialog-description"></p>
+    <div id="space-dialog-art" aria-hidden="true"><span></span><i></i><i></i></div>
+    <img id="space-dialog-image" alt="" hidden>
+    <div id="space-dialog-body"></div>
+    <a id="space-dialog-link" class="space-button" target="_blank" rel="noopener noreferrer" hidden>访问项目 <span>↗</span></a>
+</dialog>
+<script type="application/json" id="space-project-data">__PROJECT_DATA__</script>
+<noscript><style>.space-background{background:radial-gradient(ellipse at 75% 45%,#695040,#17242b 60%)}.space-rail{display:none}</style><p class="space-noscript">启用 JavaScript 可以漫游三维展厅并查看项目详情。</p></noscript>
+<script src="assets/portfolio.js" defer></script>
+</body>
+</html>

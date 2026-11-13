@@ -1,0 +1,6 @@
+node_modules/
+dist/
+index.html
+assets/
+_raw_projects.xml
+_gen_projects.py
