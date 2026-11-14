@@ -5,26 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#141c22">
     <meta name="description" content="精选项目与作品集。">
+    <title>精选项目 · Selected Work</title>
     <link rel="stylesheet" href="assets/portfolio.css">
 </head>
 <body class="space-home space-page space-projects-page">
 <div class="space-background" aria-hidden="true"><canvas id="space-canvas"></canvas></div>
 <div class="space-grain" aria-hidden="true"></div>
 <header class="space-header">
-    <a class="space-brand" href="index.html"><span class="space-mark">✦</span><span>__BRAND__</span><span class="space-brand-divider">/</span><small>PERSONAL PORTFOLIO</small></a>
+    <a class="space-brand" href="index.html"><span class="space-mark">✦</span><span class="space-brand-divider">/</span><small>PERSONAL PORTFOLIO</small></a>
     <nav aria-label="主导航"><a href="index.html">首页</a><a href="projects.html" aria-current="page">精选项目 <sup>__COUNT__</sup></a><a href="about.html">关于我 ↗</a></nav>
     <span class="space-header-note"><i></i> OPEN TO POSSIBILITIES</span>
 </header>
-<main class="space-page-main">
-    <section class="space-page-hero">
-        <p class="space-eyebrow"><span>02 /</span> SELECTED WORK</p>
-        <h1>精选<span>项目。</span></h1>
-        <p class="space-page-lede">一些关于产品、代码和数字空间的实践。向下浏览，进入每个项目的完整记录。</p>
+<main class="space-page-main space-projects-main">
+    <section class="space-page-hero space-projects-hero">
+        <div class="space-projects-intro">
+            <p class="space-eyebrow"><span>02 /</span> SELECTED WORK</p>
+            <h1>精选<span>项目。</span></h1>
+            <p class="space-page-lede">围绕产品、代码与数字空间的实践。每个项目都记录了从问题到实现的过程。</p>
+            <a class="space-shelf-cue" href="#space-project-list"><span class="space-shelf-cue-mark">↓</span><span>浏览项目目录</span><small>03 WORKS</small></a>
+        </div>
+        <div class="space-shelf-caption" aria-hidden="true"><span>THE PROJECT ARCHIVE</span><i></i><span>01 — 03</span></div>
     </section>
     <section class="space-project-list" aria-label="项目列表">
-        <div class="space-project-list-heading"><span>INDEX</span><span>PROJECT / __COUNT__</span></div>
+        <div class="space-project-list-heading"><span>INDEX</span><span>SELECTED PROJECTS <i>/ __COUNT__</i></span><span>OPEN</span></div>
         <div id="space-project-list">
-            <template id="space-project-card-template"><article class="space-list-card"><span class="space-list-index"></span><div><p class="space-eyebrow"><span class="space-list-category"></span></p><h2 class="space-list-title"></h2><p class="space-list-excerpt"></p><div class="space-tags space-list-tags"></div></div><a class="space-button space-list-link"><span>查看项目</span><span>↗</span></a></article></template>
+            <template id="space-project-card-template"><article class="space-list-card"><span class="space-list-index"></span><div class="space-list-heading"><p class="space-eyebrow"><span class="space-list-category"></span></p><h2 class="space-list-title"></h2></div><p class="space-list-excerpt"></p><div class="space-tags space-list-tags"></div><a class="space-list-link" aria-label="查看项目详情"><span>查看项目</span><span>↗</span></a></article></template>
         </div>
     </section>
 </main>

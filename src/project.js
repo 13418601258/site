@@ -13,7 +13,7 @@ const escapeHtml = (value) =>
 if (!project) {
   root.innerHTML = '<section class="space-detail-error"><p class="space-eyebrow"><span>404 /</span> PROJECT NOT FOUND</p><h1>没有找到这个<span>项目。</span></h1><p>请返回精选项目列表，选择一个项目继续浏览。</p><a class="space-button" href="projects.html">返回精选项目 <span>↗</span></a></section>';
 } else {
-  document.title = `${project.title} · text.cn`;
+  document.title = `${project.title} · Project Detail`;
   const tags = (project.tags ?? []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
   const image = project.image
     ? `<img class="space-detail-image" src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} 项目预览">`

@@ -33,7 +33,7 @@ let time = 0;
 
 try {
   const about = document.body.classList.contains("space-about-page");
-  const background = createEditorialBackground(canvas, about ? "about" : "projects");
+  const background = createEditorialBackground(canvas, about ? "about" : "projects", projects);
   const updateProgress = () => {
     dirty = true;
   };
@@ -42,8 +42,7 @@ try {
     last = now;
     if (lost || (!motion && !dirty)) return;
     if (motion) time += dt;
-    background.render(time, motion, dt);
-    dirty = false;
+    dirty = background.render(time, motion, dt) || false;
   };
   document.body.classList.add("space-ready");
   background.render(0, motion, 0);
@@ -55,11 +54,18 @@ try {
   });
   addEventListener("pointermove", (event) => {
     if (event.pointerType === "mouse") {
-      background.pointer.set(event.clientX / innerWidth - 0.5, event.clientY / innerHeight - 0.5);
+      background.setPointer(event.clientX / innerWidth - 0.5, event.clientY / innerHeight - 0.5);
       dirty = true;
     }
   }, { passive: true });
-  addEventListener("blur", () => background.pointer.set(0, 0));
+  addEventListener("pointerleave", () => {
+    background.clearPointer();
+    dirty = true;
+  });
+  addEventListener("blur", () => {
+    background.clearPointer();
+    dirty = true;
+  });
   document.addEventListener("visibilitychange", () => {
     last = performance.now();
     dirty = true;

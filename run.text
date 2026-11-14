@@ -1,0 +1,10 @@
+cd F:\Product\site
+
+# 首次运行安装依赖
+npm.cmd install
+
+# 构建网页
+npm.cmd run build
+
+# 启动本地静态服务器
+python -m http.server 8080 --directory dist

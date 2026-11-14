@@ -1,7 +1,7 @@
 import { build } from "esbuild";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
-const BRAND = "text.cn";
+const BRAND = "";
 const ABOUT =
   "喜欢设计的秩序，也喜欢代码的可能性。在这里，我记录从灵感到实现的过程，探索产品、数据与数字空间之间的联系。";
 const ABOUT_PAGE = {
