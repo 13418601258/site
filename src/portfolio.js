@@ -165,6 +165,10 @@ try {
     gallery.draw(views[index], views[index + 1], mix, time, motion, dt);
     dirty = false;
   };
+  // 同步渲染 intro 视角第一帧，让 canvas 在标记就绪前就有画面，
+  // 配合 CSS 的 blur 过渡实现「模糊到清晰」的加载体验。
+  gallery.draw(gallery.intro, gallery.exhibits[0], 0, 0, motion, 0);
+  document.body.classList.add("space-ready");
   gallery.renderer.setAnimationLoop(frame);
   addEventListener("resize", () => {
     gallery.resize();
@@ -200,7 +204,6 @@ try {
     document.body.classList.add("space-ready");
     gallery.renderer.setAnimationLoop(frame);
   });
-  document.body.classList.add("space-ready");
 } catch (error) {
   console.warn(
     "3D gallery unavailable; project content remains available.",

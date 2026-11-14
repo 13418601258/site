@@ -88,10 +88,12 @@ html.space-static {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 1.2s;
+  filter: blur(20px) scale(1.05);
+  transition: opacity 1.2s ease, filter 1.2s ease;
 }
 .space-ready .space-background canvas {
   opacity: 1;
+  filter: blur(0) scale(1);
 }
 .space-grain {
   position: fixed;
