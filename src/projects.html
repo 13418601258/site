@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#141c22">
+    <meta name="description" content="精选项目与作品集。">
+    <link rel="stylesheet" href="assets/portfolio.css">
+</head>
+<body class="space-home space-page space-projects-page">
+<div class="space-background" aria-hidden="true"><canvas id="space-canvas"></canvas></div>
+<div class="space-grain" aria-hidden="true"></div>
+<header class="space-header">
+    <a class="space-brand" href="index.html"><span class="space-mark">✦</span><span>__BRAND__</span><span class="space-brand-divider">/</span><small>PERSONAL PORTFOLIO</small></a>
+    <nav aria-label="主导航"><a href="index.html">首页</a><a href="projects.html" aria-current="page">精选项目 <sup>__COUNT__</sup></a><a href="about.html">关于我 ↗</a></nav>
+    <span class="space-header-note"><i></i> OPEN TO POSSIBILITIES</span>
+</header>
+<main class="space-page-main">
+    <section class="space-page-hero">
+        <p class="space-eyebrow"><span>02 /</span> SELECTED WORK</p>
+        <h1>精选<span>项目。</span></h1>
+        <p class="space-page-lede">一些关于产品、代码和数字空间的实践。向下浏览，进入每个项目的完整记录。</p>
+    </section>
+    <section class="space-project-list" aria-label="项目列表">
+        <div class="space-project-list-heading"><span>INDEX</span><span>PROJECT / __COUNT__</span></div>
+        <div id="space-project-list">
+            <template id="space-project-card-template"><article class="space-list-card"><span class="space-list-index"></span><div><p class="space-eyebrow"><span class="space-list-category"></span></p><h2 class="space-list-title"></h2><p class="space-list-excerpt"></p><div class="space-tags space-list-tags"></div></div><a class="space-button space-list-link"><span>查看项目</span><span>↗</span></a></article></template>
+        </div>
+    </section>
+</main>
+<footer class="space-page-footer"><a href="index.html">← 返回首页</a><a href="about.html">关于我 ↗</a></footer>
+<script type="application/json" id="space-project-data">__PROJECT_DATA__</script>
+<script src="assets/page-gallery.js" defer></script>
+</body>
+</html>
