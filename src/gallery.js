@@ -78,7 +78,7 @@ export function createGallery(canvas) {
     mesh(new THREE.BoxGeometry(w, h, d), material, x, y, z, parent);
   const cylinder = (radius, height, material, x, y, z, parent) =>
     mesh(
-      new THREE.CylinderGeometry(radius, radius, height, 80),
+      new THREE.CylinderGeometry(radius, radius, height, 48),
       material,
       x,
       y,
@@ -106,7 +106,7 @@ export function createGallery(canvas) {
     bevelSize: 0.07,
     bevelThickness: 0.07,
     bevelSegments: 2,
-    curveSegments: 64,
+    curveSegments: 32,
     steps: 1,
   });
   for (const z of [10, -10, -30, -50, -70]) {
@@ -230,7 +230,7 @@ export function createGallery(canvas) {
     );
   });
   const trace = mesh(
-    new THREE.TorusGeometry(5.1, 0.025, 8, 128),
+    new THREE.TorusGeometry(5.1, 0.025, 8, 96),
     pale,
     0,
     4.5,
@@ -250,7 +250,7 @@ export function createGallery(canvas) {
   cylinder(5.7, 0.3, darkStone, 5.2, 0.15, -51);
   for (let i = 0; i < 3; i++) {
     const line = mesh(
-      new THREE.TorusGeometry(4.8 + i * 0.38, 0.015, 6, 100),
+      new THREE.TorusGeometry(4.8 + i * 0.38, 0.015, 6, 72),
       pale,
       5.2,
       0.32,

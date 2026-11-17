@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 
 const BRAND = "";
 const ABOUT =
@@ -30,7 +30,9 @@ const esc = (value) =>
       ],
   );
 const pad2 = (n) => String(n).padStart(2, "0");
-const projectData = JSON.stringify(projects).replace(/</g, "\\u003c");
+const summaryProjects = projects.map(({ content, ...summary }) => summary);
+const summaryData = JSON.stringify(summaryProjects).replace(/</g, "\\u003c");
+const fullProjectData = JSON.stringify(projects).replace(/</g, "\\u003c");
 
 const projectSections = projects
   .map((project, i) => {
@@ -68,7 +70,64 @@ const common = {
   brand: esc(BRAND),
   count: pad2(projects.length),
   year: new Date().getFullYear(),
-  data: projectData,
+  data: summaryData,
+};
+
+const pageHtml = (source, replacements) =>
+  Object.entries({ ...common, ...replacements }).reduce(
+    (html, [key, value]) =>
+      html.replaceAll(`__${key.toUpperCase()}__`, String(value)),
+    source,
+  );
+
+const output = new URL("./dist/", import.meta.url);
+const assets = new URL("./dist/assets/", import.meta.url);
+await rm(assets, { recursive: true, force: true });
+await mkdir(output, { recursive: true });
+
+const result = await build({
+  entryPoints: ["src/portfolio.js", "src/page-gallery.js", "src/project.js"],
+  bundle: true,
+  minify: true,
+  splitting: true,
+  format: "esm",
+  target: ["es2020"],
+  outdir: "dist/assets",
+  entryNames: "[name]-[hash]",
+  chunkNames: "chunks/[name]-[hash]",
+  assetNames: "assets/[name]-[hash]",
+  metafile: true,
+  loader: { ".woff2": "file" },
+  legalComments: "eof",
+});
+
+const outputEntries = Object.entries(result.metafile.outputs);
+const toAssetPath = (filename) =>
+  filename.replace(/^dist[\\/]/, "").replaceAll("\\", "/");
+const findEntry = (entryPoint, extension) => {
+  const match = outputEntries.find(
+    ([filename, metadata]) =>
+      filename.endsWith(extension) && metadata.entryPoint === entryPoint,
+  );
+  if (!match) throw new Error(`Missing build output for ${entryPoint}`);
+  return toAssetPath(match[0]);
+};
+const findCss = (source) => {
+  const match = outputEntries.find(
+    ([filename, metadata]) =>
+      filename.endsWith(".css") &&
+      Object.keys(metadata.inputs ?? {}).some((input) =>
+        input.replaceAll("\\", "/").endsWith(source),
+      ),
+  );
+  if (!match) throw new Error(`Missing CSS output for ${source}`);
+  return toAssetPath(match[0]);
+};
+const pageAssets = {
+  PORTFOLIO_CSS: findCss("src/portfolio.css"),
+  PORTFOLIO_SCRIPT: findEntry("src/portfolio.js", ".js"),
+  PAGE_GALLERY_SCRIPT: findEntry("src/page-gallery.js", ".js"),
+  PROJECT_SCRIPT: findEntry("src/project.js", ".js"),
 };
 
 const homeHtml = template
@@ -79,44 +138,33 @@ const homeHtml = template
   .replaceAll("__PROJECT_DATA__", common.data)
   .replaceAll("__COUNT_02__", common.count)
   .replaceAll("__ABOUT_INDEX_02__", pad2(projects.length + 2))
-  .replaceAll("__YEAR__", String(common.year));
+  .replaceAll("__YEAR__", String(common.year))
+  .replaceAll("__PORTFOLIO_CSS__", pageAssets.PORTFOLIO_CSS)
+  .replaceAll("__PORTFOLIO_SCRIPT__", pageAssets.PORTFOLIO_SCRIPT);
 
-const pageHtml = (source, replacements) =>
-  Object.entries({ ...common, ...replacements }).reduce(
-    (html, [key, value]) =>
-      html.replaceAll(`__${key.toUpperCase()}__`, String(value)),
-    source,
-  );
-
-const output = new URL("./dist/", import.meta.url);
-await mkdir(output, { recursive: true });
 await writeFile(new URL("./index.html", output), homeHtml);
 await writeFile(
   new URL("./projects.html", output),
-  pageHtml(projectsTemplate, { PROJECT_DATA: common.data }),
+  pageHtml(projectsTemplate, {
+    PROJECT_DATA: common.data,
+    ...pageAssets,
+  }),
 );
 await writeFile(
   new URL("./about.html", output),
   pageHtml(aboutTemplate, {
     ABOUT_INTRO: esc(ABOUT_PAGE.intro),
     ABOUT_DETAILS: esc(ABOUT_PAGE.details),
+    ...pageAssets,
   }),
 );
 await writeFile(
   new URL("./project.html", output),
-  pageHtml(projectTemplate, { PROJECT_DATA: common.data }),
+  pageHtml(projectTemplate, {
+    PROJECT_DATA: fullProjectData,
+    ...pageAssets,
+  }),
 );
-
-await build({
-  entryPoints: ["src/portfolio.js", "src/page-gallery.js", "src/project.js"],
-  bundle: true,
-  minify: true,
-  format: "iife",
-  target: ["es2020"],
-  outdir: "dist/assets",
-  loader: { ".woff2": "file" },
-  legalComments: "eof",
-});
 
 console.log(
   `Portfolio built: index.html, projects.html, about.html, project.html + assets (${projects.length} projects)`,
