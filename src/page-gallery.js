@@ -24,14 +24,16 @@ if (list) {
 
 const canvas = document.querySelector("#space-canvas");
 if (!canvas) throw new Error("3D gallery canvas is missing.");
-const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-let motion = !reduced.matches;
+// Keep the 3D page backgrounds animated on first load; the home page still
+// provides its separate static-view toggle.
+let motion = true;
 let dirty = true;
 let lost = false;
 let last = performance.now();
 let time = 0;
 
-try {
+async function initBackground() {
+  try {
   const about = document.body.classList.contains("space-about-page");
   const background = createEditorialBackground(canvas, about ? "about" : "projects", projects);
   const updateProgress = () => {
@@ -71,10 +73,6 @@ try {
     dirty = true;
     background.renderer.setAnimationLoop(document.hidden || lost ? null : frame);
   });
-  reduced.addEventListener("change", () => {
-    motion = !reduced.matches;
-    dirty = true;
-  });
   canvas.addEventListener("webglcontextlost", (event) => {
     event.preventDefault();
     lost = true;
@@ -88,6 +86,9 @@ try {
     background.renderer.setAnimationLoop(frame);
   });
   updateProgress();
-} catch (error) {
+  } catch (error) {
   console.warn("3D gallery unavailable; static page content remains available.", error);
+  }
 }
+
+initBackground();

@@ -1,5 +1,3 @@
-import * as THREE from "three";
-import { createGallery } from "./gallery.js";
 import "./portfolio.css";
 
 const $ = (selector) => document.querySelector(selector);
@@ -7,14 +5,24 @@ const sections = [...document.querySelectorAll(".space-section")];
 const rail = [...document.querySelectorAll(".space-rail a")];
 const projects = JSON.parse($("#space-project-data").textContent);
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-let motion = !reduced.matches;
-let manualMotion = false;
+// The gallery opens in its signature animated mode. The footer toggle remains
+// available for visitors who prefer a still camera, while reduced motion only
+// affects scroll-to-top behavior below.
+let motion = true;
 let stops = [];
 let progress = 0;
 let active = -1;
 let dirty = true;
 let smoothed = 0;
 let staticProgress = 0;
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const damp = (value, target, smoothing, dt) =>
+  target + (value - target) * Math.exp(-smoothing * dt);
+const smoothstep = (value, min, max) => {
+  const t = clamp((value - min) / (max - min), 0, 1);
+  return t * t * (3 - 2 * t);
+};
 
 function scroll() {
   const y = scrollY;
@@ -25,14 +33,14 @@ function scroll() {
   progress =
     index +
     (index < stops.length - 1
-      ? THREE.MathUtils.clamp(
+      ? clamp(
           (y - stops[index]) / (stops[index + 1] - stops[index]),
           0,
           1,
         )
       : 0);
   $(".space-progress").style.transform =
-    `scaleX(${THREE.MathUtils.clamp(y / Math.max(1, document.documentElement.scrollHeight - innerHeight), 0, 1)})`;
+    `scaleX(${clamp(y / Math.max(1, document.documentElement.scrollHeight - innerHeight), 0, 1)})`;
   const next = Math.min(sections.length - 1, Math.round(progress));
   if (next !== active) {
     active = next;
@@ -76,16 +84,9 @@ function motionUI() {
 }
 
 $("#space-motion").addEventListener("click", () => {
-  manualMotion = true;
   if (motion) staticProgress = smoothed;
   motion = !motion;
   motionUI();
-});
-reduced.addEventListener("change", () => {
-  if (!manualMotion) {
-    motion = !reduced.matches;
-    motionUI();
-  }
 });
 $("#space-next").addEventListener("click", (event) => {
   if (active === sections.length - 1) {
@@ -96,56 +97,63 @@ $("#space-next").addEventListener("click", (event) => {
 });
 motionUI();
 
-try {
-  const gallery = createGallery($("#space-canvas"));
-  const views = [gallery.intro, ...projects.map((_, i) => gallery.exhibits[i % 3]), gallery.outro];
-  let last = performance.now();
-  let time = 0;
-  let lost = false;
-  const frame = (now) => {
-    const dt = Math.min((now - last) / 1000, 0.05);
-    last = now;
-    if (lost || (!motion && !dirty)) return;
-    if (motion) time += dt;
-    const destination = motion ? progress : staticProgress;
-    smoothed = motion ? THREE.MathUtils.damp(smoothed, destination, 6, dt) : destination;
-    const index = Math.min(views.length - 2, Math.floor(smoothed));
-    const mix = THREE.MathUtils.smoothstep(THREE.MathUtils.clamp(smoothed - index, 0, 1), 0.1, 0.9);
-    gallery.draw(views[index], views[index + 1], mix, time, motion, dt);
-    dirty = false;
-  };
-  gallery.draw(gallery.intro, gallery.exhibits[0], 0, 0, motion, 0);
-  document.body.classList.add("space-ready");
-  gallery.renderer.setAnimationLoop(frame);
-  addEventListener("resize", () => {
-    gallery.resize();
-    dirty = true;
-  });
-  addEventListener("pointermove", (event) => {
-    if (event.pointerType === "mouse") gallery.pointer.set(event.clientX / innerWidth - 0.5, event.clientY / innerHeight - 0.5);
-  }, { passive: true });
-  addEventListener("blur", () => gallery.pointer.set(0, 0));
-  document.addEventListener("visibilitychange", () => {
-    last = performance.now();
-    dirty = true;
-    gallery.renderer.setAnimationLoop(document.hidden || lost ? null : frame);
-  });
-  $("#space-canvas").addEventListener("webglcontextlost", (event) => {
-    event.preventDefault();
-    lost = true;
-    gallery.renderer.setAnimationLoop(null);
-    document.body.classList.remove("space-ready");
-  });
-  $("#space-canvas").addEventListener("webglcontextrestored", () => {
-    lost = false;
-    dirty = true;
+async function initGallery() {
+  try {
+    const { createGallery } = await import("./gallery.js");
+    const gallery = createGallery($("#space-canvas"));
+    const views = [gallery.intro, ...projects.map((_, i) => gallery.exhibits[i % 3]), gallery.outro];
+    let last = performance.now();
+    let time = 0;
+    let lost = false;
+    const frame = (now) => {
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      if (lost || (!motion && !dirty)) return;
+      if (motion) time += dt;
+      const destination = motion ? progress : staticProgress;
+      smoothed = motion ? damp(smoothed, destination, 6, dt) : destination;
+      const index = Math.min(views.length - 2, Math.floor(smoothed));
+      const mix = smoothstep(clamp(smoothed - index, 0, 1), 0.1, 0.9);
+      gallery.draw(views[index], views[index + 1], mix, time, motion, dt);
+      dirty = false;
+    };
+    gallery.draw(gallery.intro, gallery.exhibits[0], 0, 0, motion, 0);
     document.body.classList.add("space-ready");
     gallery.renderer.setAnimationLoop(frame);
-  });
-} catch (error) {
-  console.warn("3D gallery unavailable; project content remains available.", error);
-  $("#space-motion").hidden = true;
+    addEventListener("resize", () => {
+      gallery.resize();
+      dirty = true;
+    });
+    addEventListener("pointermove", (event) => {
+      if (event.pointerType === "mouse") gallery.pointer.set(event.clientX / innerWidth - 0.5, event.clientY / innerHeight - 0.5);
+    }, { passive: true });
+    addEventListener("blur", () => gallery.pointer.set(0, 0));
+    document.addEventListener("visibilitychange", () => {
+      last = performance.now();
+      dirty = true;
+      gallery.renderer.setAnimationLoop(document.hidden || lost ? null : frame);
+    });
+    $("#space-canvas").addEventListener("webglcontextlost", (event) => {
+      event.preventDefault();
+      lost = true;
+      gallery.renderer.setAnimationLoop(null);
+      document.body.classList.remove("space-ready");
+    });
+    $("#space-canvas").addEventListener("webglcontextrestored", () => {
+      lost = false;
+      dirty = true;
+      document.body.classList.add("space-ready");
+      gallery.renderer.setAnimationLoop(frame);
+    });
+  } catch (error) {
+    console.warn("3D gallery unavailable; project content remains available.", error);
+    $("#space-motion").hidden = true;
+  }
 }
+
+// Start fetching the 3D module on the next frame so the browser can paint the
+// document first, but do not wait for an idle period before loading the scene.
+requestAnimationFrame(() => initGallery());
 
 if (location.hash) {
   const destination = document.getElementById(location.hash.slice(1));

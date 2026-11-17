@@ -36,7 +36,9 @@ function cushionGeometry(shape, depth) {
     for (const p of ordered) positions.push(...surface(p, 1));
     for (const p of [...ordered].reverse()) positions.push(...surface(p, -1));
   }
-  for (const face of faces) subdivide(...face.map(i => outline[i]), 4);
+  // Three subdivision levels preserve the rounded silhouette while avoiding
+  // a large synchronous mesh build before the first gallery frame.
+  for (const face of faces) subdivide(...face.map(i => outline[i]), 3);
   const clockwise = THREE.ShapeUtils.isClockWise(outline);
   for (let i = 0; i < outline.length; i++) {
     const a=outline[i], b=outline[(i+1)%outline.length];
