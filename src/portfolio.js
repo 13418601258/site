@@ -13,6 +13,8 @@ let stops = [];
 let progress = 0;
 let active = -1;
 let dirty = true;
+let smoothed = 0;
+let staticProgress = 0;
 
 function scroll() {
   const y = scrollY;
@@ -52,7 +54,7 @@ function scroll() {
       : "滚动，探索下一个视角";
     $(".space-scroll-icon").textContent = last ? "↑" : "↓";
   }
-  dirty = true;
+  if (motion) dirty = true;
 }
 
 function measure() {
@@ -75,6 +77,7 @@ function motionUI() {
 
 $("#space-motion").addEventListener("click", () => {
   manualMotion = true;
+  if (motion) staticProgress = smoothed;
   motion = !motion;
   motionUI();
 });
@@ -96,7 +99,6 @@ motionUI();
 try {
   const gallery = createGallery($("#space-canvas"));
   const views = [gallery.intro, ...projects.map((_, i) => gallery.exhibits[i % 3]), gallery.outro];
-  let smoothed = progress;
   let last = performance.now();
   let time = 0;
   let lost = false;
@@ -105,7 +107,8 @@ try {
     last = now;
     if (lost || (!motion && !dirty)) return;
     if (motion) time += dt;
-    smoothed = motion ? THREE.MathUtils.damp(smoothed, progress, 6, dt) : progress;
+    const destination = motion ? progress : staticProgress;
+    smoothed = motion ? THREE.MathUtils.damp(smoothed, destination, 6, dt) : destination;
     const index = Math.min(views.length - 2, Math.floor(smoothed));
     const mix = THREE.MathUtils.smoothstep(THREE.MathUtils.clamp(smoothed - index, 0, 1), 0.1, 0.9);
     gallery.draw(views[index], views[index + 1], mix, time, motion, dt);
