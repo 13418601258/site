@@ -32,7 +32,7 @@ export function createGallery(canvas) {
   sun.position.set(-14, 25, 17);
   sun.target.position.set(2, 0, -20);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(mobile ? 1024 : 2048, mobile ? 1024 : 2048);
+  sun.shadow.mapSize.set(mobile ? 512 : 1024, mobile ? 512 : 1024);
   Object.assign(sun.shadow.camera, {
     left: -30,
     right: 30,
@@ -116,15 +116,34 @@ export function createGallery(canvas) {
     }
   }
   // Side fins and ceiling beams produce long architectural shadows across the floor.
+  const finGeometry = new THREE.BoxGeometry(0.5, 18, 0.35);
+  const beamGeometry = new THREE.BoxGeometry(32, 0.32, 0.65);
+  const finsStone = new THREE.InstancedMesh(finGeometry, stone, 25);
+  const finsDark = new THREE.InstancedMesh(finGeometry, darkStone, 25);
+  const beams = new THREE.InstancedMesh(beamGeometry, darkStone, 25);
+  const transform = new THREE.Object3D();
+  let instance = 0;
   for (let z = 18; z > -82; z -= 4) {
-    box(0.5, 18, 0.35, stone, 15.6, 9, z);
-    box(0.5, 18, 0.35, darkStone, -15.6, 9, z);
-    box(32, 0.32, 0.65, darkStone, 0, 20.9, z);
+    transform.position.set(15.6, 9, z);
+    transform.updateMatrix();
+    finsStone.setMatrixAt(instance, transform.matrix);
+    transform.position.set(-15.6, 9, z);
+    transform.updateMatrix();
+    finsDark.setMatrixAt(instance, transform.matrix);
+    transform.position.set(0, 20.9, z);
+    transform.updateMatrix();
+    beams.setMatrixAt(instance, transform.matrix);
+    instance++;
+  }
+  for (const structure of [finsStone, finsDark, beams]) {
+    structure.castShadow = true;
+    structure.receiveShadow = true;
+    scene.add(structure);
   }
   const floor = new Reflector(new THREE.PlaneGeometry(160, 220), {
     color: "#566269",
-    textureWidth: mobile ? 512 : 1024,
-    textureHeight: mobile ? 512 : 1024,
+    textureWidth: mobile ? 256 : 512,
+    textureHeight: mobile ? 256 : 512,
     clipBias: 0.003,
   });
   floor.rotation.x = -Math.PI / 2;
