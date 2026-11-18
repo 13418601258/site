@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 
 const BRAND = "";
 const ABOUT =
@@ -93,13 +93,14 @@ await mkdir(output, { recursive: true });
 await writeFile(new URL("./index.html", output), homeHtml);
 await writeFile(
   new URL("./projects.html", output),
-  pageHtml(projectsTemplate, { PROJECT_DATA: common.data }),
+  pageHtml(projectsTemplate, { PROJECT_DATA: common.data, PROJECT_LIST_SCRIPT: "assets/project-list.js" }),
 );
 await writeFile(
   new URL("./about.html", output),
   pageHtml(aboutTemplate, {
     ABOUT_INTRO: esc(ABOUT_PAGE.intro),
     ABOUT_DETAILS: esc(ABOUT_PAGE.details),
+    RESUME_URL: "assets/resume.pdf",
   }),
 );
 await writeFile(
@@ -108,7 +109,7 @@ await writeFile(
 );
 
 await build({
-  entryPoints: ["src/portfolio.js", "src/page-gallery.js", "src/project.js"],
+  entryPoints: ["src/portfolio.js", "src/page-gallery.js", "src/project.js", "src/project-list.js"],
   bundle: true,
   minify: true,
   format: "iife",
@@ -117,6 +118,12 @@ await build({
   loader: { ".woff2": "file" },
   legalComments: "eof",
 });
+
+await mkdir(new URL("./assets/", output), { recursive: true });
+await copyFile(
+  new URL("./src/source/涂凯莉_简历.pdf", import.meta.url),
+  new URL("./assets/resume.pdf", output),
+);
 
 console.log(
   `Portfolio built: index.html, projects.html, about.html, project.html + assets (${projects.length} projects)`,

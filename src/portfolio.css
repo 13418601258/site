@@ -84,7 +84,14 @@ html.space-static {
   pointer-events: none;
 }
 .space-projects-page .space-background {
-  background: linear-gradient(180deg, #171d31 0%, #302b43 54%, #252438 100%);
+  background:
+    radial-gradient(ellipse at 78% 62%, #e1a77d 0, #9a6259 24%, transparent 52%),
+    linear-gradient(180deg, #32263c 0%, #714755 42%, #d08a6f 73%, #f1c08f 100%);
+}
+.space-projects-page {
+  background:
+    radial-gradient(ellipse at 78% 62%, #e1a77d 0, #9a6259 24%, transparent 52%),
+    linear-gradient(180deg, #32263c 0%, #714755 42%, #d08a6f 73%, #f1c08f 100%);
 }
 .space-about-page .space-background {
   background: radial-gradient(ellipse at 70% 34%, #714536 0, #342536 42%, #211c24 82%);
@@ -732,6 +739,32 @@ html.space-static {
 .space-about-main > .space-button {
   pointer-events: auto;
 }
+.space-about-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  pointer-events: auto;
+}
+.space-resume-link,
+.space-resume-download {
+  color: #e9d7c3;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #eac39e66;
+  padding-bottom: 5px;
+  transition: color 0.25s, border-color 0.25s;
+}
+.space-resume-link span {
+  color: var(--space-accent);
+  font-size: 16px;
+  margin-left: 5px;
+}
+.space-resume-link:hover,
+.space-resume-download:hover {
+  color: var(--space-accent);
+  border-color: var(--space-accent);
+}
 
 /* Readable static project detail pages. */
 body.space-detail {
@@ -1344,8 +1377,14 @@ body.space-detail {
 
 /* Project archive: editorial hierarchy around the interactive shelf. */
 .space-projects-main {
-  width: min(1360px, 88%);
+  width: min(1670px, 88%);
   padding-top: 142px;
+}
+
+/* The archive opens directly on the project index. Its sunset atmosphere is
+   CSS-only so the page keeps the mood without starting a WebGL scene. */
+.space-projects-main > .space-project-list {
+  margin-top: 0;
 }
 .space-projects-hero {
   min-height: 450px;
@@ -1437,7 +1476,7 @@ body.space-detail {
   gap: 24px;
 }
 .space-project-list-heading {
-  min-height: 52px;
+  min-height: 77px;
   padding: 0 24px;
   align-items: center;
   color: #d0c4bb;
@@ -1458,8 +1497,8 @@ body.space-detail {
   font-style: normal;
 }
 .space-list-card {
-  min-height: 185px;
-  padding: 32px 24px;
+  min-height: 278px;
+  padding: 48px 36px;
   align-items: start;
   position: relative;
   background: #3a30378a;
@@ -1475,14 +1514,14 @@ body.space-detail {
 }
 .space-list-index {
   padding-top: 3px;
-  font-size: 30px;
+  font-size: 46px;
   color: #d9b08b;
 }
 .space-list-heading .space-eyebrow {
   margin: 0 0 13px !important;
 }
 .space-list-card h2 {
-  font-size: clamp(27px, 2.35vw, 35px);
+  font-size: clamp(32px, 2.5vw, 48px);
   line-height: 1;
   margin: 0;
   letter-spacing: -1px;
